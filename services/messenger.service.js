@@ -21,7 +21,7 @@ module.exports={
                     //get all infomation of text
                     data=await Sheet.listMajors(auth,text); //handle value in google sheet
                     
-                    if(data===null){
+                    if(data === null || data.length == 0){
                         data="Khong tim thay don !";
                     }
                 }
