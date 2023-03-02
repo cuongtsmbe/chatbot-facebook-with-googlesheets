@@ -85,8 +85,7 @@ async function listMajors(auth,text) {
         code = text.split(":")[1].replace(/\s/g, '');
     
         res = await sheets.spreadsheets.values.get({
-            //spreadsheetId: '100ebDMj7T8S3_sX9IftGdJ1AF7soH3OUYVVIfHKGDR4',//phanhuucuong05012001@gmail.com
-            spreadsheetId: spreadsheetId,//airua0987@gmail.com
+            spreadsheetId: spreadsheetId,
             range: `${process.env.SHEET_NAME}!D2:D`, //column of phone
         });
        
@@ -95,8 +94,7 @@ async function listMajors(auth,text) {
         code = text.split(":")[1].replace(/\s/g, '');
         
         res = await sheets.spreadsheets.values.get({
-            //spreadsheetId: '100ebDMj7T8S3_sX9IftGdJ1AF7soH3OUYVVIfHKGDR4',//phanhuucuong05012001@gmail.com
-            spreadsheetId: spreadsheetId,//airua0987@gmail.com
+            spreadsheetId: spreadsheetId,
             range: `${process.env.SHEET_NAME}!E2:E`, //colum of order
         });
     }
