@@ -87,7 +87,7 @@ async function listMajors(auth,text) {
         res = await sheets.spreadsheets.values.get({
             //spreadsheetId: '100ebDMj7T8S3_sX9IftGdJ1AF7soH3OUYVVIfHKGDR4',//phanhuucuong05012001@gmail.com
             spreadsheetId: spreadsheetId,//airua0987@gmail.com
-            range: `${process.env.SHEET_NAME}!D2:D`,
+            range: `${process.env.SHEET_NAME}!D2:D`, //column of phone
         });
        
     }else if(text.includes("madon:")){
@@ -97,7 +97,7 @@ async function listMajors(auth,text) {
         res = await sheets.spreadsheets.values.get({
             //spreadsheetId: '100ebDMj7T8S3_sX9IftGdJ1AF7soH3OUYVVIfHKGDR4',//phanhuucuong05012001@gmail.com
             spreadsheetId: spreadsheetId,//airua0987@gmail.com
-            range: `${process.env.SHEET_NAME}!E2:E`,
+            range: `${process.env.SHEET_NAME}!E2:E`, //colum of order
         });
     }
 
@@ -110,19 +110,17 @@ async function listMajors(auth,text) {
 
     var resultRowsSearch = [];
    
-    //cell start row 2 (not include header (row 1))
-    var count=1;
+
     
     //search rows have data need search
     for(var i=0;i<rows.length;i++){
         
-        count++;
         if(rows[i][0].replace(/\s/g, '') == code){
-            
+            let row=i+2;
             //get all information of user
             let dataOut = await sheets.spreadsheets.values.get({
                 spreadsheetId: spreadsheetId,//airua0987@gmail.com
-                range: `${process.env.SHEET_NAME}!A${count}:E${count}`,
+                range: `${process.env.SHEET_NAME}!A${row}:E${row}`,
             });
             resultRowsSearch.push(dataOut.data.values);
           
