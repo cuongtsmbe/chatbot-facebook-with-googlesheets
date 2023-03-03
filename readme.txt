@@ -9,3 +9,9 @@ because file credentials.json in https://console.cloud.google.com/apis/credentia
 
 config:
 - If what change fanpage FB then goto .env -> change PAGE_ACCESS_TOKEN and VERIFY_TOKEN
+
+
+Run:
+Step 1 : goto path project
+Step 2 (run project): ./run-up.sh   # this is docker compose up
+                                    # if you want stop just run "./run-down.sh" in cmd
