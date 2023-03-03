@@ -5,14 +5,14 @@ services:
       dockerfile: Dockerfile
       context: . #address of Dockerfile
     ports:
-      - "8080:8080"
+      - "8082:8080"
+      - "3002:3000"
     hostname: ggsheet
-    restart: always
     environment:
       - PAGE_ACCESS_TOKEN=EAAIg0JI8QGoBAGtIgqvCZCuhGWWFnCkJoBxCUZCeSTaC7D0CfezEwPZAaoP40Ggcs0YlVb60YtterKHwhe1ibm0ABPvJ80Kb7mCnDctBIomyC1jmZCTqiiryeZBaneRM1JhedUDa3OqGWj2DFnaZA2aZBo7KUHC41K535zfsI1CEKEmkRKvIbW1
       - VERIFY_TOKEN=googlesheetT4_1/3/2023
       - SPREADSHEETID=17KwoPtSv5mx77c0PFg8VGLzZfyajCo-SDNNBiC1ltuw
       - SHEET_NAME=data1
       - PORT=8080
-    command: npm run debug
-    
+    volumes:
+      - .:/usr/src/bot_ggsheet

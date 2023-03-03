@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 require('dotenv').config();
-const port = process.env.PORT || 80;
+const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const cors=require('cors');
 
@@ -19,7 +19,7 @@ const Webhooks = require("./webhooks/webhooks");
  }));
 
 app.get("/about",function(req,res,next){
-    res.send("1/3/2023.Google sheet + chatbot fanpage FB.");
+    res.send(`/3/2023.Google sheet + chatbot fanpage FB.`);
 })
 
 //Add support for GET requests to facebook webhook
