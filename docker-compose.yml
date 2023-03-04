@@ -1,14 +1,37 @@
+networks:
+  ggsheet-network: # tên của network đc tạo 
+    driver: bridge
+
 services:
   node-bot-ggsheet:
-    container_name: ggsheet
+    container_name: ggsheet-nodejs
     build:
       dockerfile: Dockerfile
       context: . #address of Dockerfile
     ports:
       - "8082:8080"
       - "3002:3000"
-    hostname: ggsheet
+    networks:
+      - ggsheet-network
     env_file:
       - .env
     volumes:
       - .:/usr/src/bot_ggsheet
+  db:
+      image: mysql:latest
+      container_name: ggsheet-mysql
+      #add that(command) if client not support "caching_sha2_password"
+      command: "--default-authentication-plugin=mysql_native_password"
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: pwroot
+        MYSQL_DATABASE: ggsheet
+        MYSQL_USER: dev
+        MYSQL_PASSWORD: dev
+      ports: 
+        - 3307:3306
+      networks:
+        - ggsheet-network
+      volumes:
+        - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
