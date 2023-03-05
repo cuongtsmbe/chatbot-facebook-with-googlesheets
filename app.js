@@ -21,6 +21,8 @@ app.get("/about",function(req,res,next){
     res.send(`/3/2023.Google sheet + chatbot fanpage FB.`);
 })
 
+require("./routers/user.router").userRouters(app);
+
 //Add support for GET requests to facebook webhook
 app.get("/webhook",Webhooks.getWebHook);
 app.post('/webhook', Webhooks.postWebHook);

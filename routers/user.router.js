@@ -1,9 +1,9 @@
 const userModel = require("../models/user.model");
 const config    =require("../config/default.json");
 module.exports = {
-    productRouters:function(app){
-        app.get(    "/user/fbid/all"                        ,this.get);
-        app.get(    "/user/details/by/:fanpage_id"          ,this.getOneByFBID);
+    userRouters:function(app){
+        app.get(    "/user/get/all"                         ,this.get);
+        app.get(    "/user/get/details/by/:fanpage_id"      ,this.getOneByFBID);
         app.post(   "/user/add/new"                         ,this.add);
         app.put(    "/user/update/by/fbid"                  ,this.update);
         app.put(    "/user/update/status/by/fbid"           ,this.updateStatus);
@@ -76,8 +76,18 @@ module.exports = {
             key_fanpage     :req.body.key_fanpage,          //key in fanpage page fb
             status          :req.body.status                //status for user
         };
-        
+
         try{
+            //check fanpage id had exist in DB or not
+            var data = await userModel.getOneByFBID({fanpage_id:value.fanpage_id});
+
+            if(data.length>0){
+                return res.status(400).json({
+                    code:1,
+                    mess:`Them khong thanh cong. ${value.fanpage_id} had exist`
+                });
+            }
+
             //insert to Db
             var result=await userModel.add(value);
         }catch(e){
@@ -100,7 +110,7 @@ module.exports = {
         
     },
 
-    //update value by fanpage fb
+    //update value by fanpage id fb
     update:async function(req,res,next){
         //condition fanpage id
         var condition={
@@ -116,7 +126,7 @@ module.exports = {
             key_fanpage     :req.body.key_fanpage,          //key in fanpage page fb
             status          :req.body.status                //status for user
         };
-        
+
         try{
             //update to Db
             var result=await userModel.update(condition,value);
@@ -149,7 +159,7 @@ module.exports = {
         var value={
             status          :req.body.status                //status for user
         };
-        
+
         try{
             //update to Db
             var result=await userModel.update(condition,value);
