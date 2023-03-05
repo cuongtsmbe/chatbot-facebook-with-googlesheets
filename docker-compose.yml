@@ -28,6 +28,7 @@ services:
         MYSQL_DATABASE: ggsheet
         MYSQL_USER: dev
         MYSQL_PASSWORD: dev
+        MYSQL_HOST: localhost
       ports: 
         - 3307:3306
       networks:
