@@ -27,7 +27,7 @@ module.exports = {
           return res.sendStatus(404);
     },
     postWebHook:(req, res) => {  
-        console.log("\nPOST - webhook - NgoThanhTung");
+        console.log("\nPOST - webhook ");
         // Parse the request body from the POST
         let body = req.body;
       
