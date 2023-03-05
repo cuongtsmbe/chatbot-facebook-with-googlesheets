@@ -34,5 +34,7 @@ services:
       networks:
         - ggsheet-network
       volumes:
+        - ~/mysql_data:/var/lib/mysql
         - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
+        
 

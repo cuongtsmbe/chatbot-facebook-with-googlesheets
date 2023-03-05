@@ -9,6 +9,7 @@
 
 # production
 /build
+/mysql
 
 # misc
 .DS_Store
