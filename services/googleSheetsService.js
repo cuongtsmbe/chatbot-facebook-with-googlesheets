@@ -80,10 +80,14 @@ async function listMajors(auth,text,user) {
     var spreadsheetId=user.sheet_id;
     //code is phone number or order code.
     var code=null;
+    var startRow;//row begin need search of data(not include header) example D6:D then startRow is D6
+
     if(text.includes("sdt:")){
         //get number phone | delete space character
         code = text.split(":")[1].replace(/\s/g, '');
-    
+
+        startRow=user.sdt_column.split(":")[0];
+
         res = await sheets.spreadsheets.values.get({
             spreadsheetId: spreadsheetId,
             range: `${user.sheet_name}!${user.sdt_column}`, //column of phone vd D2:D is cot D start từ dòng 2
@@ -92,7 +96,9 @@ async function listMajors(auth,text,user) {
     }else if(text.includes("madon:")){
         //get order code | delete space character
         code = text.split(":")[1].replace(/\s/g, '');
-        
+
+        startRow=user.madon_column.split(":")[0];
+
         res = await sheets.spreadsheets.values.get({
             spreadsheetId: spreadsheetId,
             range: `${user.sheet_name}!${user.madon_column}`, //colum of order vd E2:E
@@ -102,19 +108,26 @@ async function listMajors(auth,text,user) {
     //can't found
     rows = res.data.values;
     if (!rows || rows.length === 0) {
-        console.log('No data found.');
         return null;
     }
 
     var resultRowsSearch = [];
    
+    //get row begin of data need search
+    // example D62:D then numberBegin is '62'
+    var str = startRow;
+    var match = str.match(/^[^\d]+(\d+)/);
+    var numberBegin = match ? match[1] : null;
+    if(numberBegin===null){
+      numberBegin=2;
+    }
+    numberBegin=parseInt(numberBegin);
 
-    
     //search rows have data need search
     for(var i=0;i<rows.length;i++){
         
         if(rows[i][0].replace(/\s/g, '') == code){
-            let row=i+2;
+            let row=i+numberBegin;
             //get all information of user
             let dataOut = await sheets.spreadsheets.values.get({
                 spreadsheetId: spreadsheetId,
