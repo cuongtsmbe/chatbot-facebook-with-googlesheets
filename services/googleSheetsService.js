@@ -3,7 +3,6 @@ const path = require('path');
 const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
-require('dotenv').config();
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
@@ -73,11 +72,12 @@ async function authorize() {
  */
 
 //text is phone "sdt:323210" or code "madon:2131510" order 
-async function listMajors(auth,text) {
+async function listMajors(auth,text,user) {
     const sheets = google.sheets({version: 'v4', auth});
     var res=null;
     var rows=0;
-    var spreadsheetId=process.env.SPREADSHEETID;
+    //lay thong tin sheet id của user
+    var spreadsheetId=user.sheet_id;
     //code is phone number or order code.
     var code=null;
     if(text.includes("sdt:")){
@@ -86,7 +86,7 @@ async function listMajors(auth,text) {
     
         res = await sheets.spreadsheets.values.get({
             spreadsheetId: spreadsheetId,
-            range: `${process.env.SHEET_NAME}!D2:D`, //column of phone
+            range: `${user.sheet_name}!${user.sdt_column}`, //column of phone vd D2:D is cot D start từ dòng 2
         });
        
     }else if(text.includes("madon:")){
@@ -95,7 +95,7 @@ async function listMajors(auth,text) {
         
         res = await sheets.spreadsheets.values.get({
             spreadsheetId: spreadsheetId,
-            range: `${process.env.SHEET_NAME}!E2:E`, //colum of order
+            range: `${user.sheet_name}!${user.madon_column}`, //colum of order vd E2:E
         });
     }
 
@@ -117,9 +117,11 @@ async function listMajors(auth,text) {
             let row=i+2;
             //get all information of user
             let dataOut = await sheets.spreadsheets.values.get({
-                spreadsheetId: spreadsheetId,//airua0987@gmail.com
-                range: `${process.env.SHEET_NAME}!A${row}:E${row}`,
+                spreadsheetId: spreadsheetId,
+                //range: `${user.sheet_name}!A${row}:D${row}`, // lay thong tin cot A -> D dong row
+                range: `${user.sheet_name}!${user.start_column}${row}:${user.end_column}${row}`,
             });
+            //Đưa ra tất cả thông tin tìm được có trong sheet
             resultRowsSearch.push(dataOut.data.values);
           
         }

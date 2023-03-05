@@ -1,14 +1,43 @@
 const request = require('request');
 require('dotenv').config();
-
-const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN
 const Sheet= require('./googleSheetsService.js');
+const userModel =require("../models/user.model");
 
 module.exports={
-//handle Messenger text or file
+
+    //get details fanpage by fanpage id facebook
+    getDetailsUser:async function(fanpageID){
+        var condition={
+            fanpage_id:fanpageID
+        };
+        
+        try{
+            //query to DB and get user
+            var result= await userModel.getOneByFBID(condition);
+        }catch(e){
+            console.log(e);
+            return null;
+        }
+
+        return result;
+    },
+
+    
+    //handle Messenger text or file
     handleMessage:async function(sender_psid, received_message) {
+
         let response;
-  
+        
+        //lay thong tin lien quan den Fanpage facebook id
+        var user= await this.getDetailsUser(received_message.recipient.id);
+
+        if(user === null || user.length == 0){
+            console.log("fanpage id khong duoc tim thay.");
+            return false;
+        }else{
+            user=user[0];
+        }
+
         // Checks if the message contains text
         if (received_message.text) {  
             // Create the payload for a AI response text message, which
@@ -19,7 +48,7 @@ module.exports={
                 if(text.includes("sdt:")||text.includes("madon:")){
                     let auth= await Sheet.authorize(); //get author
                     //get all infomation of text
-                    data=await Sheet.listMajors(auth,text); //handle value in google sheet
+                    data=await Sheet.listMajors(auth,text,user); //handle value in google sheet
                     
                     if(data === null || data.length == 0){
                         data="Khong tim thay don !";
@@ -38,56 +67,27 @@ module.exports={
             let attachment_url = received_message.attachments[0].payload.url;
             response = {
                 "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                    "title": "Is this the right picture?",
-                    "subtitle": "Tôi không hiểu ảnh này của bạn.Làm ơn hãy gửi text cho tôi.",
-                    "image_url": attachment_url,
-                    "buttons": [
-                        {
-                        "type": "postback",
-                        "title": "Yes!",
-                        "payload": "yes",
-                        },
-                        {
-                        "type": "postback",
-                        "title": "No!",
-                        "payload": "no",
-                        }
-                    ],
-                    }]
-                }
+                    "type": "template",
+                    "payload": {
+                        "template_type": "generic",
+                        "elements": [{
+                        "title": "Is this the right picture?",
+                        "subtitle": "Tôi không hiểu ảnh này của bạn.Làm ơn hãy gửi text cho tôi.",
+                        "image_url": attachment_url,
+                        }]
+                    }
                 }
             }
         } 
         
         // Send the response message
-        this.callSendAPI(sender_psid, response);    
+        this.callSendAPI(sender_psid, response, user.key_fanpage);    
     },
 
-    
-    // Handles messaging_postbacks events
-    handlePostback: function(sender_psid, received_postback) {
-        let response;
-        
-        // Get the payload for the postback
-        let payload = received_postback.payload;
-    
-        // Set the response based on the postback payload
-        if (payload === 'yes') {
-        response = { "text": "Thanks!" }
-        } else if (payload === 'no') {
-        response = { "text": "Oops, try sending text." }
-        }
-        // Send the message to acknowledge the postback
-        this.callSendAPI(sender_psid, response);
-    },
 
     // Sends response messages via the Send API
     // response from page to sender_id
-    callSendAPI: function(sender_psid, response) {
+    callSendAPI: function(sender_psid, response, PAGE_ACCESS_TOKEN) {
         // Construct the message body
         let request_body = {
         "recipient": {
