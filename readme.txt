@@ -13,5 +13,6 @@ config:
 
 Run:
 Step 1 : goto path project
-Step 2 (run project): ./run-up.sh   # this is docker compose up
+Step 2 : change MYSQL_HOST in .env is IP or container mysql
+Step 3 (run project): ./run-up.sh   # this is docker compose up
                                     # if you want stop just run "./run-down.sh" in cmd
