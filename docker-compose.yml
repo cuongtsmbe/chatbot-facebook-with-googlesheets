@@ -28,13 +28,12 @@ services:
         MYSQL_DATABASE: ggsheet
         MYSQL_USER: dev
         MYSQL_PASSWORD: dev
-        MYSQL_HOST: localhost
       ports: 
         - 3307:3306
       networks:
         - ggsheet-network
       volumes:
-        - ~/mysql_data:/var/lib/mysql
+        - ~/data:/var/lib/mysql
         - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
         
 
