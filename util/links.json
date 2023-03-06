@@ -1,0 +1,19 @@
+{
+    "ADMIN": {
+        "AUTHENTICATE_LOGIN_LOCAL"              :"/authenticate/login/local",
+
+        "AUTHENTICATE_HASH_PW"                  :"/authentication/hash/password",
+
+        "USER_GET_ALL"                          :"/user/get/all" ,
+
+        "USER_GET_DETAILS_BY_FANPAGE_ID"        :"/user/get/details/by/:fanpage_id",
+
+        "USER_ADD_NEW"                          :"/user/add/new" ,
+
+        "USER_UPDATE_BY_FANPAGE_ID"             :"/user/update/by/fbid",
+
+        "USER_UPDATE_STATUS_BY_FANPAGE_ID"      :"/user/update/status/by/fbid",
+
+        "USER_DELETE_BY_FANPAGE_ID"             :"/user/delete/by/fbid"
+    }
+}
