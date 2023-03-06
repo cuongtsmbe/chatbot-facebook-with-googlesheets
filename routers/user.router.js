@@ -1,13 +1,14 @@
 const userModel = require("../models/user.model");
+const LINK = require("../util/links.json");
 const config    =require("../config/default.json");
 module.exports = {
     userRouters:function(app){
-        app.get(    "/user/get/all"                         ,this.get);
-        app.get(    "/user/get/details/by/:fanpage_id"      ,this.getOneByFBID);
-        app.post(   "/user/add/new"                         ,this.add);
-        app.put(    "/user/update/by/fbid"                  ,this.update);
-        app.put(    "/user/update/status/by/fbid"           ,this.updateStatus);
-        app.delete( "/user/delete/by/fbid"                  ,this.delete);
+        app.get(    LINK.ADMIN.USER_GET_ALL                                 ,this.get);
+        app.get(    LINK.ADMIN.USER_GET_DETAILS_BY_FANPAGE_ID               ,this.getOneByFBID);
+        app.post(   LINK.ADMIN.USER_ADD_NEW                                 ,this.add);
+        app.put(    LINK.ADMIN.USER_UPDATE_BY_FANPAGE_ID                    ,this.update);
+        app.put(    LINK.ADMIN.USER_UPDATE_STATUS_BY_FANPAGE_ID             ,this.updateStatus);
+        app.delete( LINK.ADMIN.USER_DELETE_BY_FANPAGE_ID                    ,this.delete);
     },
 
     //get by page
