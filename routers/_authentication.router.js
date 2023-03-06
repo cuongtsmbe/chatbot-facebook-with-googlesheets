@@ -109,7 +109,6 @@ module.exports = {
                     res.status(400).json({
                         code:3,
                         message:"check password fail.error server",
-                        error:err
                     })
                 }      
             });
