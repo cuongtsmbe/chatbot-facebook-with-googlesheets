@@ -24,7 +24,7 @@ INSERT INTO `user` (`id`, `fanpage_id`, `sheet_id`, `sheet_name`, `sdt_column`, 
 
 
 CREATE TABLE `admin` (
-  `username` varchar(200) NOT NULL DEFAULT current_timestamp(),
+  `username` varchar(200) NOT NULL DEFAULT "admin",
   `password` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
